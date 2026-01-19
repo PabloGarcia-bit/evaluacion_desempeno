@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_evaluacion_tree" model="ir.ui.view">
+        <field name="name">evaluacion.desempeno.tree</field>
+        <field name="model">evaluacion.desempeno</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="fecha_evaluacion"/>
+                <field name="puntuacion"/>
+                <field name="state" widget="badge" decoration-info="state == 'pendiente'" decoration-warning="state == 'proceso'" decoration-success="state == 'finalizado'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_evaluacion_kanban" model="ir.ui.view">
+        <field name="name">evaluacion.desempeno.kanban</field>
+        <field name="model">evaluacion.desempeno</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click shadow-sm border-left-primary">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div><span>Empleado: </span><field name="employee_id"/></div>
+                                <div><span>Puntuación: </span><strong><field name="puntuacion"/>/10</strong></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_evaluacion_desempeno" model="ir.actions.act_window">
+        <field name="name">Evaluaciones de Desempeño</field>
+        <field name="res_model">evaluacion.desempeno</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <menuitem id="menu_evaluacion_root" name="Evaluaciones" sequence="10"/>
+    <menuitem id="menu_evaluacion_main" name="Desempeño" parent="menu_evaluacion_root" action="action_evaluacion_desempeno"/>
+</odoo>
